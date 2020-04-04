@@ -19,9 +19,15 @@ ClassMethod ping() As %Status
 
 ClassMethod demoJsonResponse() As %DynamicObject
 {
+    Set json = ..getData()
+    Write ##class(Iris.JSON.FilteringServices).filterJSON(json).%ToJSON()
+    Return $$$OK
+}
+
+ClassMethod getData() As %DynamicObject
+{
     ; Generated with https://next.json-generator.com/
-    Set json = [
-    {
+    Return [{
         "_id": "5e8881a415fd83991d5fbab9",
         "index": 0,
         "guid": "5842b127-1928-48cc-abf2-423c2ce12da0",
@@ -500,10 +506,7 @@ ClassMethod demoJsonResponse() As %DynamicObject
         ],
         "greeting": "Hello, Marion! You have 8 unread messages.",
         "favoriteFruit": "apple"
-    }
-    ]
-    Write ##class(Iris.JSON.FilteringServices).filterJSON(json).%ToJSON()
-    Return $$$OK
+    }]
 }
 
 }

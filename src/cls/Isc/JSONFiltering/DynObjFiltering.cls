@@ -20,7 +20,6 @@ Method %OnNew(inputDynamicObject As %DynamicObject, filter As %String) As %Statu
     Set ..inputDynamicObject = inputDynamicObject
     Do ..processFilter(filter,.arr)
     Merge i%tFilter = arr
-    ;zw arr
     Return $$$OK
 }
 
@@ -76,6 +75,7 @@ ClassMethod processFilter(filter As %String, ByRef arr As %Binary) As %Status
 {
     Kill arr
     Set tSc = $$$OK, parent = "", tBuff = "", prevChar = ""
+
     For pos=1:1:$Length(filter) {
 
         Set char = $Extract(filter,pos)
@@ -108,7 +108,6 @@ ClassMethod processFilter(filter As %String, ByRef arr As %Binary) As %Status
 
     If tBuff '= "" {
         Set arr( ..buildKey(parent,tBuff) ) = ""
-        ;Set arr( tBuff ) = ""
     }
     
     Return tSc

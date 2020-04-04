@@ -5,8 +5,6 @@ The bandwidth usage can be very excessive and the parsing process too heavy for 
 This is a tool for easily adding a feature allowing to return a partial JSON response to your REST services.  
 
 Client application must simply add "flds" parameter following this structure :  ?flds=field1,field2,field3,... 
-
-
 Separate each field with a comma.  
 You can filter a nested object using ?flds=field1,field2[nestedProperty1,nestedProperty2],field3,...  
 Multiple nested level is supported ?flds=field1,field2[nestedProperty1[level2],nestedProperty2],field3,...  
@@ -32,16 +30,6 @@ $ docker-compose build
 
 ```
 $ docker-compose up -d
-```
-
-## How to Test it (UnitTest)
-
-Open IRIS terminal:
-
-```
-$ docker-compose exec iris irissession iris
-USER>zn "IRISAPP"
-IRISAPP>Do ##class(Isc.JSONFiltering.Test.FilteringTest).StartUnitTest()
 ```
 
 ## Filter examples
@@ -160,11 +148,8 @@ If filter string is empty, the return value is the original dynamic object witho
 Example :
 ```
 Set json = {"name" : { "first" : "Edith", "last" : "Scott"}, "friends" : [{"name": "Perkins Cruz", "id":"1", "address":[{"city":"London","street":"no value"},{"city":"Roma","street":"no value"}]}]}
-
 Set filter = "name[first],friends[name,address[city]]"
-
 Set filteredJSON = ##class(Iris.JSON.FilteringServices).filterJSON(json,filter)
-
 Write filteredJSON.%ToJSON()
 ```
 
@@ -175,7 +160,27 @@ You can easily implement the feature in your REST services using this line :
 Write ##class(Iris.JSON.FilteringServices).filterJSON(json).%ToJSON()
 ```
 
-## GraphQL
+## How to Test it
+
+### Unit Test
+
+Open IRIS terminal:
+
+```
+$ docker-compose exec iris irissession iris
+USER>zn "IRISAPP"
+IRISAPP>Do ##class(Isc.JSONFiltering.Test.FilteringTest).StartUnitTest()
+```
+
+### Postman collection 
+
+For testing purpose a [Postman collection](postman/isc-rest-json-filter.postman_collection.json) is available with a fews filter examples.  
+
+### Test page
+
+Test page http://localhost:52773/csp/irisapp/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls
+
+## Links
 
 If you are interested by this feature, you will be probably interested by [GraphQL](https://graphql.org/) approach.  
 An Objectscript implementation by Gevorg Arutiunian is available [here](https://openexchange.intersystems.com/package/GraphQL).  
