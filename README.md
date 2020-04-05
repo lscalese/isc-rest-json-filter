@@ -36,7 +36,7 @@ $ docker-compose up -d
 
 ### Top level field
 
-/csp/irisapprest/demoresponse?flds=name,age,tags
+*/csp/irisapprest/demoresponse?flds=name,age,tags*
 
 Result : 
 ```
@@ -58,7 +58,7 @@ Result :
 
 ### Nested object filter
 
-/csp/irisapprest/demoresponse?flds=name[first]  
+*/csp/irisapprest/demoresponse?flds=name[first]*  
 Result : 
 ```
 {
@@ -68,7 +68,7 @@ Result :
 }
 ```
 
-/csp/irisapprest/demoresponse?flds=name,friends[name]  
+*/csp/irisapprest/demoresponse?flds=name,friends[name]*  
 Result : 
 ```
 {
@@ -90,7 +90,7 @@ Result :
 }
 ```
 
-/csp/irisapprest/demoresponse?flds=name,friends[name,address[city]],age  
+*/csp/irisapprest/demoresponse?flds=name,friends[name,address[city]],age*  
 Result : 
 ```
 {
@@ -172,13 +172,22 @@ USER>zn "IRISAPP"
 IRISAPP>Do ##class(Isc.JSONFiltering.Test.FilteringTest).StartUnitTest()
 ```
 
-### Postman collection 
+### Test page
+
+Test page http://<host>:<port>/csp/irisapp/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
+Default : http://localhost:52773/csp/irisapp/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
+
+![test_page_capture](/img/test-page.png)
+
+**Attention** : There is ajax requests using basic authentication with the default username\password (_system ...).  
+
+### Postman collection  
 
 For testing purpose a [Postman collection](postman/isc-rest-json-filter.postman_collection.json) is available with a fews filter examples.  
 
-### Test page
+## License
 
-Test page http://localhost:52773/csp/irisapp/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.  
 
 ## Links
 

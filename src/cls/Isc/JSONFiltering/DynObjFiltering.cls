@@ -25,25 +25,16 @@ Method %OnNew(inputDynamicObject As %DynamicObject, filter As %String) As %Statu
 
 Method filterDynamicObject(inputDynamicObject As %DynamicObject, tFilter As %String = "") As %DynamicObject
 {
-    Set tSc = $$$OK
-    Set tFilterKey = ""
+    Set tFilterKey = tFilter
     Set isArray = inputDynamicObject.%IsA("%DynamicArray")
-
-    If isArray {
-        Set:tFilter'="*" tFilterKey = tFilter
-        Set outputDynamicObject = []
-    } Else {
-        Set outputDynamicObject = {}
-    }
-
-    Set:tFilter="*" tFilterKey = tFilter
+    Set outputDynamicObject = $Select( isArray : [], 1: {} )
+    
     Set iter = inputDynamicObject.%GetIterator()
    
 	While iter.%GetNext(.key , .tProperty ) {
         Set:('isArray)&&(tFilterKey'="*") tFilterKey = $Select( tFilter="" : key , 1 : tFilter _ "." _ key) 
         If $IsObject(tProperty) {
-            Set partial = 0
-            Set:..inFilter(tFilterKey,.partial) $Property(outputDynamicObject, key) = ..filterDynamicObject(tProperty,$Select(partial:tFilterKey,1:"*"))
+            Set:..inFilter(tFilterKey,.partial) $Property(outputDynamicObject, key) = ..filterDynamicObject(tProperty, $Select( partial : tFilterKey , 1 :"*" ) )
         } Else {
             Set:..inFilter(tFilterKey) $Property(outputDynamicObject, key) = tProperty
         }
@@ -53,6 +44,8 @@ Method filterDynamicObject(inputDynamicObject As %DynamicObject, tFilter As %Str
 
 Method inFilter(tFilterKey As %String, ByRef partial As %Boolean = 0) As %Boolean [ Private ]
 {
+    Set partial = 0
+    
     If tFilterKey="*" {
     
         Return 1
