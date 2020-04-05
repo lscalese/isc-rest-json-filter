@@ -1,10 +1,11 @@
 ## Isc-Rest-Json-Filter
 
+This is a tool for easily adding a feature allowing to return a partial JSON response to your REST services.  
 The most often, REST services return a large number of fields.  
 The bandwidth usage can be very excessive and the parsing process too heavy for a client application (web, mobile...).  
-This is a tool for easily adding a feature allowing to return a partial JSON response to your REST services.  
+Providing functionality to select fields can be very useful for clients app.
 
-Client application must simply add "flds" parameter following this structure :  ?flds=field1,field2,field3,... 
+Client app must simply add "flds" parameter following this structure :  ?flds=field1,field2,field3,... 
 Separate each field with a comma.  
 You can filter a nested object using ?flds=field1,field2[nestedProperty1,nestedProperty2],field3,...  
 Multiple nested level is supported ?flds=field1,field2[nestedProperty1[level2],nestedProperty2],field3,...  
