@@ -37,7 +37,7 @@ ClassMethod OnPage() As %Status
                  
                 <div class="form-group">
                     &nbsp;<br/>
-                    <label for="filterString">Filter string #(..EscapeHTML("?flds="))#</label>
+                    <label for="filterString">Filter string #(..EscapeHTML("/csp/irisapprest/demoresponse?flds="))#</label>
                     <input type="text" class="form-control" id="filterString"  placeholder="put your filter string, example : age,isActive,name[first],friends[name,address[city]],email">
                 </div>
                 <button type="button" class="btn btn-primary" onclick="filterJSON();">Submit</button>
@@ -46,7 +46,7 @@ ClassMethod OnPage() As %Status
                 <div class="form-group">
                     &nbsp;<br/>
                     <label for="jsonResponse">JSON Response</label>
-                    <textarea class="form-control" id="jsonResponse" rows="30" readonly ></textarea>
+                    <textarea class="form-control" id="jsonResponse" rows="20" readonly ></textarea>
                 </div>
             </div>
 
