@@ -175,7 +175,7 @@ IRISAPP>Do ##class(Isc.JSONFiltering.Test.FilteringTest).StartUnitTest()
 
 ### Test page
 
-Test page http://<host>:<port>/csp/irisapp/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
+Test page http://host:port/csp/irisapp/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
 Default : http://localhost:52773/csp/irisapp/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
 
 ![test_page_capture](/img/test-page.png)
