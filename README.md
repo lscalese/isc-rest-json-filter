@@ -140,7 +140,7 @@ Result :
 
 ## How to use
 
-Call ##class(Iris.JSON.FilteringServices).filterJSON(json,filter) classmethod.  
+Call ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(json,filter) classmethod.  
 The first argument is a dynamic object to filter and the second argument is the filter string.  
 The classmethod return a filtered dynamic object.  
 
@@ -150,7 +150,7 @@ Example :
 ```
 Set json = {"name" : { "first" : "Edith", "last" : "Scott"}, "friends" : [{"name": "Perkins Cruz", "id":"1", "address":[{"city":"London","street":"no value"},{"city":"Roma","street":"no value"}]}]}
 Set filter = "name[first],friends[name,address[city]]"
-Set filteredJSON = ##class(Iris.JSON.FilteringServices).filterJSON(json,filter)
+Set filteredJSON = ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(json,filter)
 Write filteredJSON.%ToJSON()
 ```
 
@@ -158,7 +158,7 @@ If you don't pass the filter string argument, the filter by default is %request.
 You can easily implement the feature in your REST services using this line : 
 
 ```
-Write ##class(Iris.JSON.FilteringServices).filterJSON(json).%ToJSON()
+Write ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(json).%ToJSON()
 ```
 
 ## How to Test it

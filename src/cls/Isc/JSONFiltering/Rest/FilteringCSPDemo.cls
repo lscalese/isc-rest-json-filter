@@ -27,21 +27,26 @@ ClassMethod OnPage() As %Status
             </nav>
             &nbsp;<br/>
             <div class="container">
-
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary" onclick="jQuery('#filterString').val('age,name');filterJSON();">Simple</button>
-                    <button type="button" class="btn btn-secondary" onclick="jQuery('#filterString').val('name[first],friends');filterJSON();">Nested object</button>
-                    <button type="button" class="btn btn-secondary" onclick="jQuery('#filterString').val('name[first],friends[name,address[city]]');filterJSON();">Nest object multi level</button>
-                    <button type="button" class="btn btn-secondary" onclick="jQuery('#filterString').val('');filterJSON();">Clear</button>
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-2" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-secondary" onclick="jQuery('#filterString').val('age,name');filterJSON();">Simple filter</button>
+                        <button type="button" class="btn btn-secondary" onclick="jQuery('#filterString').val('name[first],friends');filterJSON();">Nested object</button>
+                        <button type="button" class="btn btn-secondary" onclick="jQuery('#filterString').val('name[first],friends[name,address[city]]');filterJSON();">Multi level</button>
+                        <button type="button" class="btn btn-secondary" onclick="jQuery('#filterString').val('');filterJSON();">Clear flds</button>
+                    </div>
+                    
                 </div>
-                 
                 <div class="form-group">
                     &nbsp;<br/>
                     <label for="filterString">Filter string #(..EscapeHTML("/csp/irisapprest/demoresponse?flds="))#</label>
                     <input type="text" class="form-control" id="filterString"  placeholder="put your filter string, example : age,isActive,name[first],friends[name,address[city]],email">
                 </div>
+               
+                <div class="form-group">
+                    <label for="searchCriteria" data-toggle="tooltip" data-placement="top" title="#(..EscapeHTML("Operator list : =, !=, <, >, <=, >=, <>, %STARTSWITH, NULL, IN, and NOT NULL"))#">Search Criteria #(..EscapeHTML("&searchCriteria="))##(..EscapeHTML("[""property"",""value"",""operator""]"))#</label>
+                    <input type="text" class="form-control" id="searchCriteria"  placeholder="Search criteria example : #(..EscapeHTML("[""age"",22,""=""]"))#">
+                </div>
                 <button type="button" class="btn btn-primary" onclick="filterJSON();">Submit</button>
-                
 
                 <div class="form-group">
                     &nbsp;<br/>
@@ -59,11 +64,12 @@ ClassMethod OnPage() As %Status
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
             <script type="text/javascript">
                 jQuery(function() {
-                    jQuery("#filterString").on("keypress", function(e){
+                    jQuery("#filterString, #searchCriteria").on("keypress", function(e){
                         if (e.which == 13){
                             filterJSON();
                         }
                     });
+                    jQuery('[data-toggle="tooltip"]').tooltip()
                 });
 
                 function filterJSON() {
@@ -72,7 +78,7 @@ ClassMethod OnPage() As %Status
                         url: "/csp/irisapprest/demoresponse",
                         async: true,
                         dataType: 'json',
-                        data: {"flds":jQuery("#filterString").val()},
+                        data: {"flds":jQuery("#filterString").val(),"searchCriteria":jQuery("#searchCriteria").val()},
                         success: function (data){
                             var json = JSON.stringify(data,null,2)
                             jQuery("#jsonResponse").val(json);
