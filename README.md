@@ -198,7 +198,7 @@ By default, It retrieves filter in %request.Data("flds",1)) and search criteria 
 
 Tips:  
 
-It's possible to use search criteria to nested object property using separator double underscore "__".  
+It's possible to use search criteria with a nested object property, for that use double underscore "__" as separator.  
 [{"name": {"first": "Edith","last": "Scott"}}]  
 For searching on property "last", you may use search criteria like this [["name__last","Scott","="]].  
 
@@ -233,7 +233,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Links
 
-If you are interested by this feature, you will be probably interested by [GraphQL](https://graphql.org/) approach.  
+If you are interested by these features, you will be probably interested by [GraphQL](https://graphql.org/) approach.  
 An Objectscript implementation by Gevorg Arutiunian is available [here](https://openexchange.intersystems.com/package/GraphQL).  
 
 ## How to start coding
