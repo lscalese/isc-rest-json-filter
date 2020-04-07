@@ -3,6 +3,8 @@ Class Isc.JSONFiltering.DynObjSearchCriteria Extends %RegisteredObject
 
 Parameter DOCDBNAME = "Isc.JSONFiltering.JSONFiltering";
 
+Parameter OBJSEPARATOR = "__";
+
 Property inputJSON As %DynamicArray;
 
 Property searchCriteria As %DynamicArray;
@@ -10,18 +12,6 @@ Property searchCriteria As %DynamicArray;
 Property tempDBName As %String [ InitialExpression = {..#DOCDBNAME _ $Increment(^Isc.JSONFiltering.JSONFiltering)}, Private ];
 
 Property db As %DocDB.Database [ Private ];
-
-ClassMethod test()
-{
-    Set data = ##class(Isc.JSONFiltering.Rest.FilteringDemo).getData()
-    ; =, !=, <, >, <=, >=, <>, %STARTSWITH, NULL, IN, and NOT NULL
-    Set criteria = ["index","2",">"]
-    Set t = $zh
-    set arr = ..cmSearchCriteria(data,criteria)
-    Write !,"time : ",$zh-t
-    Write !,arr.%ToJSON()
-    w !, arr.%Size()
-}
 
 ClassMethod cmSearchCriteria(inputJSON As %DynamicArray, searchCriteria As %DynamicArray) As %DynamicArray
 {
@@ -103,13 +93,13 @@ Method getType(property As %String) As %String [ Private ]
 {
     Set item = ..inputJSON.%Get(0)
 
-    If property '[ "__" {
+    If property '[ ..#OBJSEPARATOR {
         
         Set type = item.%GetTypeOf(property)
 
     } Else {
 
-        Set tmpList = $Listfromstring(property,"__"), ptr = 0
+        Set tmpList = $Listfromstring(property,..#OBJSEPARATOR), ptr = 0
 
         While $Listnext(tmpList,ptr,key) {
             Set temp = $Property(item,key)
@@ -126,7 +116,7 @@ Method getType(property As %String) As %String [ Private ]
 
 Method getExpression(property As %String) As %String [ Private ]
 {
-    Return "$." _ $Replace(property,"__",".")
+    Return "$." _ $Replace(property,..#OBJSEPARATOR,".")
 }
 
 Method deleteDocDB() As %Boolean [ Private ]

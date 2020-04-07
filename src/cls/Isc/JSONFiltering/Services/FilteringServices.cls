@@ -9,16 +9,16 @@ ClassMethod filterJSON(json As %DynamicObject, filterString As %String = { $Sele
 
 ClassMethod searchCriteria(json As %DynamicObject, searchCriteria As %String = { $Select($Isobject(%request):$Get(%request.Data("searchCriteria",1)),1:"")}) As %DynamicObject
 {
-    Return:searchCriteria="" json
-    Set searchCriteria = [].%FromJSON(searchCriteria)
+    Return:searchCriteria="" json ; No searchCriteria, original object is returned.
+    Return:'json.%IsA("%DynamicArray") json ; NA for non DynamicArray.
+    If '$IsObject(searchCriteria) { 
+        Set searchCriteria = [].%FromJSON(searchCriteria)
+    }
     Return ##class(Isc.JSONFiltering.DynObjSearchCriteria).cmSearchCriteria(json,searchCriteria)
 }
 
 ClassMethod searchCriteriaAndFilter(json As %DynamicObject, filterString As %String = { $Select($Isobject(%request):$Get(%request.Data("flds",1)),1:"")}, searchCriteria As %String = { $Select($Isobject(%request):$Get(%request.Data("searchCriteria",1)),1:"")}) As %DynamicObject
 {
-    ;Set output = ..searchCriteria(json,searchCriteria)
-    ;Set output = ..filterJSON(output,filterString)
-    ;Return output
     Return ..filterJSON(..searchCriteria(json,searchCriteria),filterString)
 }
 

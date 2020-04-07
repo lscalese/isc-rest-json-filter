@@ -10,6 +10,12 @@ Separate each field with a comma.
 You can filter a nested object using ?flds=field1,field2[nestedProperty1,nestedProperty2],field3,...  
 Multiple nested level is supported ?flds=field1,field2[nestedProperty1[level2],nestedProperty2],field3,...  
 
+In addition to that, you can also provide a basic search for your services wich return a json array.  
+No additional SQL is needed. Let's use **%DocDB.Database** and the *restriction predicate syntax* :  [["property","value","operator"],["property2","value2","operator2"]]  
+Client app can be use the server-side json search with the argument searchCriteria.  
+Example : &searchCriteria=[["age",22,"="],["index",2,">"]]
+
+
 ## Prerequisites
 Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
 
@@ -146,7 +152,7 @@ The classmethod return a filtered dynamic object.
 
 If filter string is empty, the return value is the original dynamic object without filtering.  
 
-Example :
+Filter Example :
 ```
 Set json = {"name" : { "first" : "Edith", "last" : "Scott"}, "friends" : [{"name": "Perkins Cruz", "id":"1", "address":[{"city":"London","street":"no value"},{"city":"Roma","street":"no value"}]}]}
 Set filter = "name[first],friends[name,address[city]]"
@@ -160,6 +166,41 @@ You can easily implement the feature in your REST services using this line :
 ```
 Write ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(json).%ToJSON()
 ```
+
+Search Criteria Example :
+
+Seach Criteria work only with dynamic array, *search predicate syntax* use the following structure [["property","value","operator"],["property2","value2","operator2"],...].  
+
+
+```
+Set json = [{"name":"John", "city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"},{"name":"Alain","city":"Bruges"},{"name":"Aurélien","city":"Mons"}]
+Set searchCriteria = [["city","Namur","="]]
+Set result = ##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteria(json,searchCriteria)
+Write !,result.%ToJSON()
+```
+
+We can add a property filter to output only the name :  
+
+```
+Set filter = "name"
+Set filteredJSON = ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(result,filter)
+Write !,filteredJSON.%ToJSON()
+```
+
+The simplest way to implement these two features in your REST services is :  
+
+```
+Write ##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteriaAndFilter(json).%ToJSON()
+```
+
+This is a combination of filter property and search criteria.
+By default, It retrieves filter in %request.Data("flds",1)) and search criteria in %request.Data("searchCriteria",1)).  
+
+Tips:  
+
+It's possible to use search criteria to nested object property using separator double underscore "__".  
+[{"name": {"first": "Edith","last": "Scott"}}]  
+For searching on property "last", you may use search criteria like this [["name__last","Scott","="]].  
 
 ## How to Test it
 

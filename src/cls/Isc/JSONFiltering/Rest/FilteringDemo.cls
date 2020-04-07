@@ -20,7 +20,6 @@ ClassMethod ping() As %Status
 ClassMethod demoJsonResponse() As %DynamicObject
 {
     Set json = ..getData()
-    ;Write ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(json).%ToJSON()
     Write ##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteriaAndFilter(json).%ToJSON()
     Return $$$OK
 }
