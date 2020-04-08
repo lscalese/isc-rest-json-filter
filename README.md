@@ -231,11 +231,6 @@ For testing purpose a [Postman collection](postman/isc-rest-json-filter.postman_
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.  
 
-## Links
-
-If you are interested by these features, you will be probably interested by [GraphQL](https://graphql.org/) approach.  
-An Objectscript implementation by Gevorg Arutiunian is available [here](https://openexchange.intersystems.com/package/GraphQL).  
-
 ## How to start coding
 This repository is ready to code in VSCode with ObjectScript plugin.
 Install [VSCode](https://code.visualstudio.com/), [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) and [ObjectScript](https://marketplace.visualstudio.com/items?itemName=daimor.vscode-objectscript) plugin and open the folder in VSCode.
@@ -275,3 +270,10 @@ Settings file to let you immedietly code in VSCode with [VSCode ObjectScript plu
 Config file if you want to debug with VSCode ObjectScript
 
 [Read about all the files in this artilce](https://community.intersystems.com/post/dockerfile-and-friends-or-how-run-and-collaborate-objectscript-projects-intersystems-iris)
+
+## Links
+
+If you are interested by these features, you will be probably interested by [GraphQL](https://graphql.org/) approach.  
+An Objectscript implementation by Gevorg Arutiunian is available [here](https://openexchange.intersystems.com/package/GraphQL).  
+
+Json icon provider [FriCONiX.com](https://friconix.com)
