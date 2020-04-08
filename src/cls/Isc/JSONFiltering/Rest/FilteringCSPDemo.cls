@@ -95,7 +95,7 @@ ClassMethod writeJS() As %Status
         function filterJSON() {
             jQuery.ajax({
                 type: "GET",
-                url: "/csp/irisapprest/demoresponse",
+                url: "/csp/jsonfilterrest/demoresponse",
                 async: true,
                 dataType: 'json',
                 data: {"flds":jQuery("#filterString").val(),"searchCriteria":jQuery("#searchCriteria").val()},

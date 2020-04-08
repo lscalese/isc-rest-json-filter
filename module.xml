@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+  <Document name="json-filter.ZPM">
+    <Module>
+        <Name>json-filter</Name>
+        <Version>1.2.0</Version>
+        <Packaging>module</Packaging>
+        <SourcesRoot>src</SourcesRoot>
+        <Resource Name="Isc.JSONFiltering.PKG"/>
+        <CSPApplication 
+            Path="/src/csp"
+            Url="/csp/jsonfilterrest" 
+            CookiePath="/csp/jsonfilterrest"
+            PasswordAuthEnabled="1"
+            AuthenticationMethods="32" 
+            DispatchClass="Isc.JSONFiltering.Rest.FilteringDemo"/>
+        
+        <CSPApplication
+            Path="/src/csp"
+            Url="/csp/jsonfilter"
+            CookiePath="/csp/jsonfilter"
+            Directory="{$cspdir}/jsonfilter"
+            ServeFiles="1"
+            Recurse="1"
+        />
+    </Module>
+  </Document>
+</Export>
