@@ -257,10 +257,6 @@ Use .env/ file to adjust the dockerfile being used in docker-compose.
 Dockerfile-zpm builds for you a container which contains ZPM package manager client so you are able to install packages from ZPM in this container.
 As an example of usage in installs webterminal
 
-### Dockerfile-web
-
-Dockerfile-web starts IRIS does the same what Dockerfile does and also sets up the web app programmatically
-
 
 ### .vscode/settings.json
 

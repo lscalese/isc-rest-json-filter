@@ -24,6 +24,8 @@ XData setup
     </Invoke>
   </Namespace>
 
+  <Invoke Class="App.Installer" Method="fixDispatchClass"></Invoke>
+
 </Manifest>
 }
 
