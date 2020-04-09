@@ -272,5 +272,3 @@ Config file if you want to debug with VSCode ObjectScript
 
 If you are interested by these features, you will be probably interested by [GraphQL](https://graphql.org/) approach.  
 An Objectscript implementation by Gevorg Arutiunian is available [here](https://openexchange.intersystems.com/package/GraphQL).  
-
-Json icon provider [FriCONiX.com](https://friconix.com)
