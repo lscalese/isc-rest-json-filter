@@ -112,7 +112,7 @@ ClassMethod writeJS() As %Status
                 },
                 beforeSend: function (xhr) {
                     if (basicDefaultAuth) {
-                        xhr.setRequestHeader ("Authorization", "Basic " + btoa("_system:SYS2"));
+                        xhr.setRequestHeader ("Authorization", "Basic " + btoa("_system:SYS"));
                     }
                 }
             });
