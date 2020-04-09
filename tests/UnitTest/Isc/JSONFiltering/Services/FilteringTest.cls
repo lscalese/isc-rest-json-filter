@@ -35,4 +35,27 @@ Method TestFilter() As %Status
     Return tSc
 }
 
+Method TestSearchCriteria() As %Status
+{
+    Set tSc = $$$OK
+    Set json = [{"name":"John", "city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"},{"name":"Alain","city":"Bruges"},{"name":"Aurélien","city":"Mons"}]
+    Set searchCriteria = [["city","Namur","="]]
+    Set result = ##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteria(json,searchCriteria)
+    Set expectedResult = [{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"}]
+    Do $$$AssertEquals(expectedResult.%ToJSON(),result.%ToJSON(),"Search criteria")
+    Return tSc
+}
+
+Method TestCombinationCriteriaFilter() As %Status
+{
+    Set tSc = $$$OK
+    Set json = [{"name":"John", "city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"},{"name":"Alain","city":"Bruges"},{"name":"Aurélien","city":"Mons"}]
+    Set searchCriteria = [["city","Namur","="]]
+    Set filter = "name"
+    Set result = ##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteriaAndFilter(json,filter,searchCriteria)
+    Set expectedResult = [{"name":"Lorenzo"},{"name":"Matteo"},{"name":"Alessio"}]
+    Do $$$AssertEquals(expectedResult.%ToJSON(),result.%ToJSON(),"Combination Search criteria and property filter")
+    Return tSc
+}
+
 }

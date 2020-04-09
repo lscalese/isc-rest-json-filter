@@ -92,6 +92,8 @@ ClassMethod writeJS() As %Status
         /*<*/ var searchCriteria1 = [["age",25,">"]]
         /*<*/ var searchCriteria2 = [["age",22,">"],["eyeColor","brown","="]]
               var searchCriteria3 = [["company","TWIGGERY,COASH","IN"]]
+
+              var basicDefaultAuth = true;
         function filterJSON() {
             jQuery.ajax({
                 type: "GET",
@@ -103,8 +105,15 @@ ClassMethod writeJS() As %Status
                     var json = JSON.stringify(data,null,2)
                     jQuery("#jsonResponse").val(json);
                 },
+                error: function(jqXHR, textStatus, errorThrown ) {
+                    if (jqXHR.status==401) {
+                        basicDefaultAuth = false; // force browser prompt for next query
+                    }
+                },
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader ("Authorization", "Basic " + btoa("_system:SYS"));
+                    if (basicDefaultAuth) {
+                        xhr.setRequestHeader ("Authorization", "Basic " + btoa("_system:SYS2"));
+                    }
                 }
             });
         }
