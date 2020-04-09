@@ -22,12 +22,6 @@ XData setup
     <CSPApplication Url="${cspappurl}" Directory="${cspdir}${cspappname}"  ServeFiles="1" Recurse="1" MatchRoles=":%DB_${Namespace}" AuthenticationMethods="32"/>
   </Namespace>
 
-  <Namespace Name="${Namespace}">
-    <Invoke Class="Isc.JSONFiltering.Test.FilteringTest" Method="SetUnitTestRoot">
-      <Arg Value="/irisdev/app/src/cls/Isc/JSONFiltering/Test/"/>
-    </Invoke>
-  </Namespace>
-
   <Invoke Class="App.Installer" Method="fixDispatchClass">
     <Arg Value="${restappurl}"/>
   </Invoke>

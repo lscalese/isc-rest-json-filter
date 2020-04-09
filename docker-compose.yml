@@ -4,6 +4,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
+      #dockerfile: Dockerfile-zpm
     restart: always
     ports: 
       - 51773:51773

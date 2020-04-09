@@ -18,6 +18,7 @@ USER irisowner
 
 COPY  Installer.cls .
 COPY  src src
+COPY  tests tests
 SHELL ["/irissession.sh"]
 
 RUN \

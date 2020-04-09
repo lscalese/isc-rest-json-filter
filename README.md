@@ -211,13 +211,14 @@ Open IRIS terminal:
 ```
 $ docker-compose exec iris irissession iris
 USER>zn "IRISAPP"
-IRISAPP>Do ##class(Isc.JSONFiltering.Test.FilteringTest).StartUnitTest()
+IRISAPP>Set ^UnitTestRoot = "/opt/irisapp/tests/"
+IRISAPP>Do ##class(%UnitTest.Manager).RunTest(,"/nodelete")
 ```
 
 ### Test page
 
-Test page http://host:port/csp/irisapp/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
-Default : http://localhost:52773/csp/irisapp/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
+Test page http://host:port/csp/jsonfilter/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
+Default : http://localhost:52773/csp/jsonfilter/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
 
 ![test_page_capture](/img/test-page.png)
 

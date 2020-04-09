@@ -10,7 +10,7 @@
         <CSPApplication 
             Path="/src/csp"
             Url="/csp/jsonfilterrest" 
-            CookiePath="/csp/jsonfilterrest"
+            CookiePath="/csp/jsonfilterrest/"
             PasswordAuthEnabled="1"
             AuthenticationMethods="32" 
             DispatchClass="Isc.JSONFiltering.Rest.FilteringDemo"/>
@@ -18,11 +18,13 @@
         <CSPApplication
             Path="/src/csp"
             Url="/csp/jsonfilter"
-            CookiePath="/csp/jsonfilter"
+            CookiePath="/csp/jsonfilter/"
             Directory="{$cspdir}/jsonfilter"
             ServeFiles="1"
-            Recurse="1"
-        />
+            PasswordAuthEnabled="1"
+            AuthenticationMethods="32" 
+            Recurse="1"/>
+        <UnitTest Name="tests" Package="UnitTest.Isc.JSONFiltering.Services" Phase="test"/>
     </Module>
   </Document>
 </Export>

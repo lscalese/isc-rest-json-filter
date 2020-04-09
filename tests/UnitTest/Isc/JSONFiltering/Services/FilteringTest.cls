@@ -1,17 +1,5 @@
-Class Isc.JSONFiltering.Test.FilteringTest Extends %UnitTest.TestCase
+Class UnitTest.Isc.JSONFiltering.Services.FilteringServices Extends %UnitTest.TestCase
 {
-
-ClassMethod SetUnitTestRoot(directory As %String) As %Status
-{
-    Set ^UnitTestRoot=##class(%File).NormalizeDirectory(directory)
-    Return $$$OK
-}
-
-ClassMethod StartUnitTest()
-{
-    Do ##class(%UnitTest.Manager).RunTest(,"/nodelete")
-    Quit
-}
 
 Method TestFilter() As %Status
 {
