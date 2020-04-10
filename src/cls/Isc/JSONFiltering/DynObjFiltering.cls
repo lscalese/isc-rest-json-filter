@@ -14,7 +14,7 @@ ClassMethod cmFilter(inputDynamicObject As %DynamicObject, filter As %String) As
     Return tOutputDynamic
 }
 
-Method %OnNew(inputDynamicObject As %DynamicObject, filter As %String) As %Status
+Method %OnNew(inputDynamicObject As %DynamicObject, filter As %String) As %Status [ Private ]
 {
     Set ..filter = filter
     Set ..inputDynamicObject = inputDynamicObject
@@ -23,7 +23,7 @@ Method %OnNew(inputDynamicObject As %DynamicObject, filter As %String) As %Statu
     Return $$$OK
 }
 
-Method filterDynamicObject(inputDynamicObject As %DynamicObject, tFilter As %String = "") As %DynamicObject
+Method filterDynamicObject(inputDynamicObject As %DynamicObject, tFilter As %String = "") As %DynamicObject [ Private ]
 {
     Set tFilterKey = tFilter
     Set isArray = inputDynamicObject.%IsA("%DynamicArray")
