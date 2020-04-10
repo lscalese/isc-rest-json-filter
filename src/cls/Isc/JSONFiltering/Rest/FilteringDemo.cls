@@ -1,3 +1,5 @@
+Include jsonfilter
+
 Class Isc.JSONFiltering.Rest.FilteringDemo Extends %CSP.REST
 {
 
@@ -20,7 +22,12 @@ ClassMethod ping() As %Status
 ClassMethod demoJsonResponse() As %DynamicObject
 {
     Set json = ..getData()
-    Write ##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteriaAndFilter(json).%ToJSON()
+    
+    ; Write ##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteriaAndFilter(json).%ToJSON()
+    ; If jsonfilter macro is included you use $$$JSFilterDef(json)
+    
+    Write $$$JSFilterDef(json).%ToJSON()
+    
     Return $$$OK
 }
 

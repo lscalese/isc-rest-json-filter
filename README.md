@@ -198,9 +198,11 @@ By default, It retrieves filter in %request.Data("flds",1)) and search criteria 
 
 Tips:  
 
-It's possible to use search criteria with a nested object property, for that use double underscore "__" as separator.  
+It's possible to use search criteria with a nested object property, for that use dot  "." as separator.  
 [{"name": {"first": "Edith","last": "Scott"}}]  
-For searching on property "last", you may use search criteria like this [["name__last","Scott","="]].  
+For searching on property "last", you may use search criteria like this [["name.last","Scott","="]].  
+
+In your app, you should [Include jsonfilter](src/inc/jsonfilter.inc) and use macro instead classmethod call Isc.JSONFiltering.Services.FilteringServices.  It would be very useful in case of refactoring.  
 
 ## How to Test it
 

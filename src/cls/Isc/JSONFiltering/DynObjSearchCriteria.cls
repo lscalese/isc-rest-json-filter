@@ -1,4 +1,4 @@
-Class Isc.JSONFiltering.DynObjSearchCriteria Extends %RegisteredObject
+Class Isc.JSONFiltering.DynObjSearchCriteria Extends %RegisteredObject [ Deprecated ]
 {
 
 Parameter DOCDBNAME = "Isc.JSONFiltering.JSONFiltering";
