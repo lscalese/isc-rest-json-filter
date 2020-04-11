@@ -44,7 +44,7 @@ ClassMethod searchCriteria(json As %DynamicObject, searchCriteria As %String = {
         ; For comparison purpose.  
         ; Add $$$JSCriteriaSetOldVerFlag(1) in your process to force the old version usage.
         ; Old version use a new %DocDB for each request.  
-        ; It was a bad approach.  A fail to story that I wish to share with you :p
+        ; It were a bad approach.  A fail to story that I wish to share with you :p
         ; We shouldn't use a new temp %DocDB for each request.
         ; ^%SYS.MONLBL show an high fixed cost for %CreatePoperty and %CreateDatabase.
         ; Report ^%SYS.MONLBL is available in others/monlbl.csv 
