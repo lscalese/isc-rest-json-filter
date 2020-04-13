@@ -3,8 +3,7 @@ Include jsonfilter
 Class Isc.JSONFiltering.Services.FilteringServices
 {
 
-/// $$$JSFilter(json)
-ClassMethod applyAllFilterParameters(json As %DynamicAbstractObject, filterString As %String = {$$$JSFilterDefaultFlds}, searchCriteria As %String = {$$$JSFilterDefaultCriteria}, sortOptions As %String = {$$$JSFilterDefaultSortOptions}, limitResult As %Integer = {$$$JSFilterDefaultLimitResult}) As %DynamicAbstractObject
+ClassMethod applyAllFilterParameters(json As %DynamicAbstractObject, filterString As %String = {$$$JSFilterGetFlds}, searchCriteria As %String = {$$$JSFilterGetSearchCriteria}, sortOptions As %String = {$$$JSFilterGetSort}, limitResult As %Integer = {$$$JSFilterGetLimit}) As %DynamicAbstractObject
 {
     ; First step select only matching result with search criteria
     Set result = ..searchCriteria(json,searchCriteria)
@@ -31,13 +30,11 @@ ClassMethod applyAllFilterParameters(json As %DynamicAbstractObject, filterStrin
 /// Set filteredJSON = ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(json,filter)
 /// Write filteredJSON.%ToJSON()
 /// </code><br/>
-ClassMethod filterJSON(json As %DynamicAbstractObject, filter As %DynamicArray = {$$$JSFilterDefaultFlds}, minifiedForm As %String = {$$$JSFilterDefaultMinifiedFlds}) As %DynamicAbstractObject
+ClassMethod filterJSON(json As %DynamicAbstractObject, filter As %DynamicArray = {$$$JSFilterGetFlds}) As %DynamicAbstractObject
 {
-    Return:(filter="")&&(minifiedForm="") json ; No filter string, original object is returned
-    If (filter'="")&&('$IsObject(filter)) { 
-        Set filter = [].%FromJSON(filter)
-    }
-    Return ##class(Isc.JSONFiltering.DynObjFiltering).cmFilter(json, filter, minifiedForm)
+    Return:filter="" json ; No filter, original object is returned
+
+    Return ##class(Isc.JSONFiltering.DynObjFiltering).cmFilter(json, filter)
 }
 
 /// json must be a DynamicArray<br/>
@@ -51,17 +48,13 @@ ClassMethod filterJSON(json As %DynamicAbstractObject, filter As %DynamicArray =
 /// Set result = ##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteria(json,searchCriteria)
 /// Write !,result.%ToJSON()
 /// </code><br/>
-ClassMethod searchCriteria(json As %DynamicObject, searchCriteria As %String = {$$$JSFilterDefaultCriteria}) As %DynamicAbstractObject
+ClassMethod searchCriteria(json As %DynamicObject, searchCriteria As %String = {$$$JSFilterGetSearchCriteria}) As %DynamicAbstractObject
 {
     Return:searchCriteria="" json ; No searchCriteria, original object is returned.
     Return:'json.%IsA("%DynamicArray") json ; NA for non DynamicArray.
 
-    If '$IsObject(searchCriteria) { 
-        Set searchCriteria = [].%FromJSON(searchCriteria)
-    }
-
     ; Old version use a new %DocDB for each request.  
-    ; It were a bad approach.  A fail to story that I wish to share with you :p
+    ; It were a bad approach.
     ; We shouldn't use a new temp %DocDB for each request.
     ; ^%SYS.MONLBL show an high fixed cost for %CreatePoperty and %CreateDatabase.
     ; Report ^%SYS.MONLBL is available in others/monlbl.csv 
@@ -74,20 +67,17 @@ ClassMethod searchCriteria(json As %DynamicObject, searchCriteria As %String = {
     Return result
 }
 
-ClassMethod sort(json As %DynamicArray, sortOptions As %DynamicArray = "") As %DynamicArray
+ClassMethod sort(json As %DynamicArray, sortOptions As %DynamicArray = {$$$JSFilterGetSort}) As %DynamicArray
 {
     Return:sortOptions="" json
-    
-    If '$Isobject(sortOptions) {
-        Set sortOptions = [].%FromJSON(sortOptions)
-    }
 
     Return ##class(Isc.JSONFiltering.DynObjSorter).cmSort(json,sortOptions)
 }
 
-ClassMethod limitResult(json As %DynamicArray, limit As %Integer = 0) As %DynamicArray
+ClassMethod limitResult(json As %DynamicArray, limit As %Integer = {$$$JSFilterGetLimit}) As %DynamicArray
 {
     Return:+limit'>0 json
+
     Set result = []
     Set cnt = 0
     Set iter = json.%GetIterator()

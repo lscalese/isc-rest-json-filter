@@ -9,24 +9,18 @@ Property inputDynamicObject As %DynamicObject;
 
 Property tFilter As %Binary [ MultiDimensional, Private ];
 
-ClassMethod cmFilter(inputDynamicObject As %DynamicObject, filter As %DynamicArray, minifiedFilter As %String = "") As %DynamicObject
+ClassMethod cmFilter(inputDynamicObject As %DynamicObject, filter As %DynamicArray) As %DynamicObject
 {
-    Set filtering = ..%New(inputDynamicObject, filter, minifiedFilter)
+    Set filtering = ..%New(inputDynamicObject, filter)
     Set tOutputDynamic = filtering.filterDynamicObject(filtering.inputDynamicObject)
     Return tOutputDynamic
 }
 
-Method %OnNew(inputDynamicObject As %DynamicObject, filter As %DynamicArray, minifiedFilter As %String = "") As %Status [ Private ]
+Method %OnNew(inputDynamicObject As %DynamicObject, filter As %DynamicArray) As %Status [ Private ]
 {
     Set ..filter = filter
     Set ..inputDynamicObject = inputDynamicObject
-    Set ..minifiedFilter = minifiedFilter
-    
-    If minifiedFilter'="" {
-        Do ..processMinifiedFilter(minifiedFilter,.arr)
-    } Else {
-        Do ..processFilter(filter,.arr)
-    }
+    Do ..processFilter(filter,.arr)
     Merge i%tFilter = arr
     Return $$$OK
 }
@@ -87,53 +81,6 @@ ClassMethod processFilter(filter As %DynamicArray, ByRef arr As %Binary) As %Sta
         
     }
     Return $$$OK
-}
-
-ClassMethod processMinifiedFilter(filter As %String, ByRef arr As %Binary) As %Status
-{
-    Kill arr
-    Set tSc = $$$OK, parent = "", tBuff = "", prevChar = ""
-
-    For pos=1:1:$Length(filter) {
-
-        Set char = $Extract(filter,pos)
-        
-        If (char = ",") && (prevChar '= "]") {
-
-            Set arr( ..buildKey(parent,tBuff) ) = ""
-            Set tBuff = ""
-
-        } ElseIf char = "[" {
-            
-            Set parent = parent _ $s(parent'="":".",1:"") _tBuff
-            Set arr( parent ) = "partial"
-            Set tBuff = ""
-
-        } ElseIf char = "]" {
-            
-            Set arr( ..buildKey(parent,tBuff) ) = ""
-            Set tBuff = ""
-            Set parent = $Piece(parent,".",*-1)
-
-        } ElseIf char '= "," {
-
-            Set tBuff = tBuff _ char
-            
-        }
-
-        Set prevChar = char
-    }
-
-    If tBuff '= "" {
-        Set arr( ..buildKey(parent,tBuff) ) = ""
-    }
-    
-    Return tSc
-}
-
-ClassMethod buildKey(parent As %String, tBuff As %String) As %String [ CodeMode = expression, Private ]
-{
-$Select(parent="":tBuff,1:parent _ "." _ tBuff)
 }
 
 }

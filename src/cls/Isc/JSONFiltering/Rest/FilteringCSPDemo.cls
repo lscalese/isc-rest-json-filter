@@ -33,9 +33,9 @@ ClassMethod OnPage() As %Status
 
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group mr-2" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter(JSON.stringify(propertyFilter1));">Simple filter</button>
-                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter(JSON.stringify(propertyFilter2));">Nested object</button>
-                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter(JSON.stringify(propertyFilter3));">Multi level</button>
+                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter(propertyFilter1);">Simple filter</button>
+                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter(propertyFilter2);">Nested object</button>
+                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter(propertyFilter3);">Nested object</button>
                         <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter('');">Clear Fitler</button>
                     </div>
                     
@@ -51,12 +51,12 @@ ClassMethod OnPage() As %Status
 
                 <div class="form-group">
                     &nbsp;<br/>
-                    <label for="filterString">Filter string #(..EscapeHTML("/csp/irisapprest/demoresponse?flds="))#</label>
-                    <input type="text" class="form-control" id="filterString"  placeholder="put your filter string, example : #(..EscapeHTML("[""name.first"",""friends"",""eyeColor"",""company""]"))#">
+                    <label for="filterString">Filter string #(..EscapeHTML("/csp/irisapprest/demoresponse?jsflt="))#</label>
+                    <input type="text" class="form-control" id="filterString"  placeholder="put your filter string, example : #(..EscapeHTML("name[first],friends[name,address[city]]"))#">
                 </div>
                
                 <div class="form-group">
-                    <label for="searchCriteria" data-toggle="tooltip" data-placement="top" title="#(..EscapeHTML("Operator list : =, !=, <, >, <=, >=, <>, %STARTSWITH, NULL, IN, and NOT NULL"))#">#(..EscapeHTML("&searchCriteria="))#</label>
+                    <label for="searchCriteria" data-toggle="tooltip" data-placement="top" title="#(..EscapeHTML("Operator list : =, !=, <, >, <=, >=, <>, %STARTSWITH, NULL, IN, and NOT NULL"))#">#(..EscapeHTML("&jsfltsc="))#</label>
                     <input type="text" class="form-control" id="searchCriteria"  placeholder="Search criteria example : #(..EscapeHTML("[[""age"",22,""=""]]"))#">
                 </div>
                 <button type="button" class="btn btn-primary" onclick="filterJSON();">Submit</button>
@@ -93,9 +93,13 @@ ClassMethod writeJS() As %Status
         /*<*/   var searchCriteria2 = [["age",22,">"],["eyeColor","brown","="]]
                 var searchCriteria3 = [["company","TWIGGERY,COASH","IN"]]
 
-                var propertyFilter1 = ["age","name","eyeColor","company"]
-                var propertyFilter2 = ["name.first","friends","eyeColor","company"]
-                var propertyFilter3 = ["name.first","friends.name","address.city","eyeColor","company"]
+                //var propertyFilter1 = ["age","name","eyeColor","company"]
+                //var propertyFilter2 = ["name.first","friends","eyeColor","company"]
+                //var propertyFilter3 = ["name.first","friends.name","address.city","eyeColor","company"]
+
+                var propertyFilter1 = "age,name,eyeColor,company"
+                var propertyFilter2 = "name[first],friends,eyeColor,company"
+                var propertyFilter3 = "name[first],friends[name,address[city]],eyeColor,company"
                 
                 var basicDefaultAuth = true;
 
@@ -105,7 +109,7 @@ ClassMethod writeJS() As %Status
                 url: "/csp/jsonfilterrest/demoresponse",
                 async: true,
                 dataType: 'json',
-                data: {"jsfilter":JSON.stringify({"flds":jQuery("#filterString").val(),"sc":jQuery("#searchCriteria").val()})},
+                data: {"jsflt":jQuery("#filterString").val(),"jsfltsc":jQuery("#searchCriteria").val()},
                 success: function (data){
                     var json = JSON.stringify(data,null,2)
                     jQuery("#jsonResponse").val(json);

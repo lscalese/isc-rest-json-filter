@@ -35,7 +35,7 @@ Method sort() As %DynamicArray
 
     Set iter = ..inputJSON.%GetIterator()
     While iter.%GetNext(.key , .item ) {
-        Set value = ..getPropertyValue(item, ..sortBy)
+        Set value = ##class(Isc.JSONFiltering.Utils).getPropertyValue(item, ..sortBy)
         If $Isvalidnum(value) {
             Set ^||zTmpSort(value,key)=""
         } Else {
@@ -55,21 +55,6 @@ Method sort() As %DynamicArray
     Kill ^||zTmpSort
     
     Return result
-}
-
-ClassMethod getPropertyValue(item As %DynamicObject, property As %String) As %String
-{
-    Set tList = $Listfromstring(property,".")
-    Set ptr = 0
-    Set propertyValue = item
-
-    While $Listnext(tList,ptr,propertyName) {
-
-        Quit:'$Isobject(propertyValue)
-        Set propertyValue = $Property( propertyValue, propertyName )
-    }
-
-    Return propertyValue
 }
 
 }

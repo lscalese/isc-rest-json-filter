@@ -139,22 +139,29 @@ Set result = ##class(Isc.JSONFiltering.Services.FilteringServices).limitResult(j
 
 ## How it works with REST client app
 
-Client app add a request parameter named "jsfilter". This parameter is not mandatory.
+Client REST app can use these features just by adding request parameters.  
+See the following tab:  
 
-It must be a serialized result of an object with the following structure : 
+| Feature | Request Parameter Name | Example Value | 
+|:--|:--|--:|
+| Property filtering | jsflt | ``name,friends[name,address[city]]`` |
+| Searching | jsfltsc | ``["name.first","Edith","="]`` |
+| Sorting | jsfltsrt | ``name.first,desc`` |
+| Limit | jsfltlmt | ``5`` |
+
+There is no mandatory query parameter.
+
+## Back-end REST app
+
+Backend application retrieve filter data provided by client app and process it with **$$$JSFilter** macro.  
+In the following example, the macro return a filtered %DynamicObject or %DynamicArray.  
+json is a %DynamicObject or %DynamicArray to filter.
 
 ```
-var jsfilter = {
-    "flds":["name.first","friends.name","friends.address.city"],
-    "sc":[["name","A","%STARTSWITH"]],
-    "limit":5,
-    "sort":["name.first","desc"]
-}
+Set filteredJSON = $$$JSFilter(json)
 ```
 
-There isn't any fields mandatory.  
-
-Backend application retrieve jsfilter data and process it with **$$$JSFilter(json)** macro.
+The macro $$$JSFilter retrieve all filter data in %request.Data and call the appropriate process.  
 
 ## Prerequisites
 Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
@@ -195,16 +202,14 @@ IRISAPP>Do ##class(%UnitTest.Manager).RunTest(,"/nodelete")
 
 ### Test page
 
-Test page http://host:port/csp/jsonfilter/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
-Default : http://localhost:52773/csp/jsonfilter/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
+Basic test page : http://localhost:52773/csp/jsonfilter/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
 
 ![test_page_capture](/img/test-page.png)
 
-**Attention** : There is ajax requests using basic authentication with the default username\password (_system ...).  
 
 ### Postman collection  
 
-For testing purpose a [Postman collection](postman/isc-rest-json-filter.postman_collection.json) is available with a fews filter examples.  
+For testing purpose a [Postman collection](postman/isc-rest-json-filter.postman_collection.json) is available with some filter examples.  
 
 ## License
 
