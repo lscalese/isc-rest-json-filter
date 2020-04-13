@@ -5,8 +5,15 @@
         <Name>json-filter</Name>
         <Version>1.2.0</Version>
         <Packaging>module</Packaging>
+        <Dependencies>
+          <ModuleReference>
+            <Name>swagger-ui</Name>
+            <Version>*</Version>
+          </ModuleReference>
+        </Dependencies>
         <SourcesRoot>src</SourcesRoot>
         <Resource Name="Isc.JSONFiltering.PKG"/>
+        
         <CSPApplication 
             Path="/src/csp"
             Url="/csp/jsonfilterrest" 
@@ -24,6 +31,21 @@
             PasswordAuthEnabled="1"
             AuthenticationMethods="32" 
             Recurse="1"/>
+
+        <CSPApplication 
+            Url="/crud"
+            Recurse="1"
+            SourcePath="/web"
+            DeployPath="{$cspdir}/crud" 
+            MatchRoles=":{$dbrole}"
+            PasswordAuthEnabled="0"
+            UnauthenticatedEnabled="0"
+            DispatchClass="Sample.PersonREST"
+            ServeFiles="1"
+            CookiePath="/crud"
+            UseCookies="2"
+          />
+
         <UnitTest Name="/tests" Package="UnitTest.Isc.JSONFiltering.Services" Phase="test"/>
     </Module>
   </Document>

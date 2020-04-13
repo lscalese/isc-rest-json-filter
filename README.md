@@ -1,20 +1,160 @@
-## Isc-Rest-Json-Filter
+# JSON Filter
 
-This is a tool for easily adding a feature allowing to return a partial JSON response to your REST services.  
-The most often, REST services return a large number of fields.  
-The bandwidth usage can be very excessive and the parsing process too heavy for a client application (web, mobile...).  
-Providing functionality to select fields can be very useful for clients app.
+This is an application for adding a fews helpful features to your rest services :
 
-Clients app must simply add "flds" parameter following this structure :  ?flds=field1,field2,field3,... 
-Separate each field with a comma.  
-You can filter a nested object using ?flds=field1,field2[nestedProperty1,nestedProperty2],field3,...  
-Multiple nested level is supported ?flds=field1,field2[nestedProperty1[level2],nestedProperty2],field3,...  
+* [Property filtering](#Property-filtering)
+* [Searching](#Searching)
+* [Sorting](#Sorting)
+* [Limit result](#Limit-result)
 
-In addition to that, you can also provide a basic search for your services wich return a json array.  
-No additional SQL is needed. Let's use **%DocDB.Database** and the *restriction predicate syntax* :  [["property","value","operator"],["property2","value2","operator2"]]  
-Client app can be use the server-side json search with the argument searchCriteria.  
-Example : &searchCriteria=[["age",22,"="],["index",2,">"]]
+Some basic features required in most rest services.  
 
+## Quick start
+
+Include **jsonfilter inc flile** to your REST services class and apply **$$$JSFilter(json)** macro to a %DynamicObject\DynamicArray.  
+
+```
+Include jsonfilter
+
+Class Isc.JSONFiltering.Rest.FilteringDemo Extends %CSP.REST
+{
+
+Parameter CONTENTTYPE = {..#CONTENTTYPEJSON};
+
+XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
+{
+<Routes>
+    <Route Url="/demoresponse" Method="GET" Call="demoJsonResponse" Cors="true"/>
+</Routes>
+}
+
+ClassMethod demoJsonResponse() As %DynamicObject
+{
+    Set json = [{"name":"John", "city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"},{"name":"Alain","city":"Bruges"},{"name":"Aurélien","city":"Mons"}]
+
+    Write $$$JSFilter(json).%ToJSON()
+    
+    Return $$$OK
+}
+}
+```
+
+**$$$JSFilter(json)** macro apply all json filter features automatically.
+
+## Property filtering
+
+It's an interesting feature for your client app that need to reduce the bandwith usage.  
+
+Property filter is a simple dynamic array which contain the list of properties.  
+You can use dot as a separator to specify a nested property.  
+```
+Set json = {"name" : { "first" : "Edith", "last" : "Scott"}, "friends" : [{"name": "Perkins Cruz", "id":"1", "address":[{"city":"London","street":"no value"},{"city":"Roma","street":"no value"}]}]}
+
+Set propertyFilter = ["name.first","friends.name","friends.address.city"]
+Set filteredJSON = $$$JSFilterProperty(json,propertyFilter)
+
+Write filteredJSON.%ToJSON()
+```
+
+For testing purpose in an Iris terminal, you can use a classmethod call instead of $$$JSFilterProperty macro.  
+```
+Set filteredJSON = ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(json,propertyFilter) 
+```
+We recommand to always use macro in your app.  It would be useful if a class is renamed in a further version.  
+
+*Result*
+```
+{"name":{"first":"Edith"},"friends":[{"name":"Perkins Cruz","address":[{"city":"London"},{"city":"Roma"}]}]}
+```
+
+## Searching
+
+Seach Criteria work with dynamic array parameters following this syntax [["property","value","operator"],["property2","value2","operator2"],...].  
+It's the same structure of *restriction predicate syntax* used with %FindDocuments (%DocDB.Database).  
+
+
+```
+Set json = [{"name":"John", "city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"},{"name":"Alain","city":"Bruges"},{"name":"Aurélien","city":"Mons"}]
+
+Set searchCriteria = [["city","Namur","="]]
+Set result = $$$JSFilterCriteria(json,searchCriteria)
+Write !,result.%ToJSON()
+```
+
+You can use the folowing classmethod instead of $$$JSFilterCriteria for testing purpose : 
+```
+Set result = ##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteria(json,searchCriteria)
+```
+
+*Result*  
+```
+[{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"}]
+```
+
+## Sorting
+
+Sort parameter is a dynamic array with two items.  
+The first item is the "sort by" property and the second item is the order "desc" or "asc".  
+If the second item is missing, "desc" is selected by default.  
+The used property to sort can be a nested property, but not a list or a property in a nested list of object.  
+
+
+```
+Set json = [{"name":"John", "city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"},{"name":"Alain","city":"Bruges"},{"name":"Aurélien","city":"Mons"}]
+
+Set sort = ["city","desc"]
+Set result = $$$JSFilterSort(json,searchCriteria)
+Write !,result.%ToJSON()
+```
+
+You can use the folowing classmethod instead of $$$JSFilterSort for testing purpose : 
+```
+Set result = ##class(Isc.JSONFiltering.Services.FilteringServices).sort(json,sort)
+```
+
+*Result*  
+```
+[{"name":"Alain","city":"Bruges"},{"name":"John","city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Aurélien","city":"Mons"},{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"}]
+```
+
+## Limit result
+
+```
+Set json = [{"name":"John", "city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"},{"name":"Alain","city":"Bruges"},{"name":"Aurélien","city":"Mons"}]
+
+Set limit = 3
+Set result = $$$JSFilterLimit(json,limit)
+Write !,result.%ToJSON()
+```
+
+You can use the folowing classmethod instead of $$$JSFilterLimit for testing purpose : 
+```
+Set result = ##class(Isc.JSONFiltering.Services.FilteringServices).limitResult(json,limit)
+```
+
+*Result*  
+```
+[{"name":"John","city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Lorenzo","city":"Namur"}]
+```
+
+## How it works with REST client app
+
+Client app add a request parameter named "jsfilter". This parameter is not mandatory.
+
+It must be a serialized result of an object with the following structure : 
+
+```
+var jsfilter = {
+    "flds":["name.first","friends.name","friends.address.city"],
+    "sc":[["name","A","%STARTSWITH"]],
+    "limit":5,
+    "sort":["name.first","desc"]
+}
+```
+
+There isn't any fields mandatory.  
+
+Backend application retrieve jsfilter data and process it with **$$$JSFilter(json)** macro.
 
 ## Prerequisites
 Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
@@ -39,170 +179,6 @@ $ docker-compose build
 $ docker-compose up -d
 ```
 
-## Filter examples
-
-### Top level field
-
-*/csp/irisapprest/demoresponse?flds=name,age,tags*
-
-Result : 
-```
-{
-    "age": 22,
-    "name": {
-        "first": "Edith",
-        "last": "Scott"
-    },
-    "tags": [
-        "ipsum",
-        "ullamco",
-        "Lorem",
-        "velit",
-        "qui"
-    ]
-}
-```
-
-### Nested object filter
-
-*/csp/irisapprest/demoresponse?flds=name[first]*  
-Result : 
-```
-{
-    "name": {
-        "first": "Edith"
-    }
-}
-```
-
-*/csp/irisapprest/demoresponse?flds=name,friends[name]*  
-Result : 
-```
-{
-    "name": {
-        "first": "Edith",
-        "last": "Scott"
-    },
-    "friends": [
-        {
-            "name": "Perkins Cruz"
-        },
-        {
-            "name": "Burns Sandoval"
-        },
-        {
-            "name": "Miranda Barker"
-        }
-    ]
-}
-```
-
-*/csp/irisapprest/demoresponse?flds=name,friends[name,address[city]],age*  
-Result : 
-```
-{
-    "age": 22,
-    "name": {
-        "first": "Edith",
-        "last": "Scott"
-    },
-    "friends": [
-        {
-            "name": "Perkins Cruz",
-            "address": [
-                {
-                    "city": "London"
-                },
-                {
-                    "city": "Roma"
-                }
-            ]
-        },
-        {
-            "name": "Burns Sandoval",
-            "address": [
-                {
-                    "city": "London"
-                },
-                {
-                    "city": "Roma"
-                }
-            ]
-        },
-        {
-            "name": "Miranda Barker",
-            "address": [
-                {
-                    "city": "London"
-                },
-                {
-                    "city": "Roma"
-                }
-            ]
-        }
-    ]
-}
-```
-
-## How to use
-
-Call ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(json,filter) classmethod.  
-The first argument is a dynamic object to filter and the second argument is the filter string.  
-The classmethod return a filtered dynamic object.  
-
-If filter string is empty, the return value is the original dynamic object without filtering.  
-
-Filter Example :
-```
-Set json = {"name" : { "first" : "Edith", "last" : "Scott"}, "friends" : [{"name": "Perkins Cruz", "id":"1", "address":[{"city":"London","street":"no value"},{"city":"Roma","street":"no value"}]}]}
-Set filter = "name[first],friends[name,address[city]]"
-Set filteredJSON = ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(json,filter)
-Write filteredJSON.%ToJSON()
-```
-
-If you don't pass the filter string argument, the filter by default is %request.Data("flds",1)) value.  
-You can easily implement the feature in your REST services using this line : 
-
-```
-Write ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(json).%ToJSON()
-```
-
-Search Criteria Example :
-
-Seach Criteria work only with dynamic array, *search predicate syntax* use the following structure [["property","value","operator"],["property2","value2","operator2"],...].  
-
-
-```
-Set json = [{"name":"John", "city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"},{"name":"Alain","city":"Bruges"},{"name":"Aurélien","city":"Mons"}]
-Set searchCriteria = [["city","Namur","="]]
-Set result = ##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteria(json,searchCriteria)
-Write !,result.%ToJSON()
-```
-
-We can add a property filter to output only the name :  
-
-```
-Set filter = "name"
-Set filteredJSON = ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(result,filter)
-Write !,filteredJSON.%ToJSON()
-```
-
-The simplest way to implement these two features in your REST services is :  
-
-```
-Write ##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteriaAndFilter(json).%ToJSON()
-```
-
-This is a combination of filter property and search criteria.
-By default, It retrieves filter in %request.Data("flds",1)) and search criteria in %request.Data("searchCriteria",1)).  
-
-Tips:  
-
-It's possible to use search criteria with a nested object property, for that use dot  "." as separator.  
-[{"name": {"first": "Edith","last": "Scott"}}]  
-For searching on property "last", you may use search criteria like this [["name.last","Scott","="]].  
-
-In your app, you should [Include jsonfilter](src/inc/jsonfilter.inc) and use macro instead classmethod call Isc.JSONFiltering.Services.FilteringServices.  It would be very useful in case of refactoring.  
 
 ## How to Test it
 
@@ -254,12 +230,6 @@ The script in Installer.cls will import everything you place under /src into IRI
 The simplest dockerfile which starts IRIS and imports Installer.cls and then runs the Installer.setup method, which creates IRISAPP Namespace and imports ObjectScript code from /src folder into it.
 Use the related docker-compose.yml to easily setup additional parametes like port number and where you map keys and host folders.
 Use .env/ file to adjust the dockerfile being used in docker-compose.
-
-### Dockerfile-zpm
-
-Dockerfile-zpm builds for you a container which contains ZPM package manager client so you are able to install packages from ZPM in this container.
-As an example of usage in installs webterminal
-
 
 ### .vscode/settings.json
 

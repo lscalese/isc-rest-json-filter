@@ -19,7 +19,7 @@ Property searchCriteria As %DynamicArray;
 Property requestId As %Integer [ InitialExpression = {$Increment(^Isc.JSONFiltering.JSONFiltering)}, Private ];
 
 /// Used collation for string properties (Default is 7)
-Property collation As %Integer;
+Property collation As %Integer [ InitialExpression = {$$$JSFilterCollation} ];
 
 ClassMethod cmSearchCriteria(inputJSON As %DynamicArray, searchCriteria As %DynamicArray) As %DynamicArray
 {

@@ -1,24 +1,32 @@
 Class Isc.JSONFiltering.DynObjFiltering Extends %RegisteredObject
 {
 
-Property filter As %String;
+Property filter As %DynamicArray;
+
+Property minifiedFilter As %String;
 
 Property inputDynamicObject As %DynamicObject;
 
 Property tFilter As %Binary [ MultiDimensional, Private ];
 
-ClassMethod cmFilter(inputDynamicObject As %DynamicObject, filter As %String) As %DynamicObject
+ClassMethod cmFilter(inputDynamicObject As %DynamicObject, filter As %DynamicArray, minifiedFilter As %String = "") As %DynamicObject
 {
-    Set filtering = ..%New(inputDynamicObject, filter)
+    Set filtering = ..%New(inputDynamicObject, filter, minifiedFilter)
     Set tOutputDynamic = filtering.filterDynamicObject(filtering.inputDynamicObject)
     Return tOutputDynamic
 }
 
-Method %OnNew(inputDynamicObject As %DynamicObject, filter As %String) As %Status [ Private ]
+Method %OnNew(inputDynamicObject As %DynamicObject, filter As %DynamicArray, minifiedFilter As %String = "") As %Status [ Private ]
 {
     Set ..filter = filter
     Set ..inputDynamicObject = inputDynamicObject
-    Do ..processFilter(filter,.arr)
+    Set ..minifiedFilter = minifiedFilter
+    
+    If minifiedFilter'="" {
+        Do ..processMinifiedFilter(minifiedFilter,.arr)
+    } Else {
+        Do ..processFilter(filter,.arr)
+    }
     Merge i%tFilter = arr
     Return $$$OK
 }
@@ -64,7 +72,24 @@ Method inFilter(tFilterKey As %String, ByRef partial As %Boolean = 0) As %Boolea
     Return 0
 }
 
-ClassMethod processFilter(filter As %String, ByRef arr As %Binary) As %Status
+ClassMethod processFilter(filter As %DynamicArray, ByRef arr As %Binary) As %Status
+{
+    Kill arr
+
+    Set iter = filter.%GetIterator()
+    While iter.%GetNext(.key , .itemProperty ) {
+        Continue:itemProperty=""
+        
+        Set arr( itemProperty ) = ""
+        
+        Set parent = $Piece(itemProperty,".",1,*-1)
+        Set:parent'="" arr( parent ) = "partial"
+        
+    }
+    Return $$$OK
+}
+
+ClassMethod processMinifiedFilter(filter As %String, ByRef arr As %Binary) As %Status
 {
     Kill arr
     Set tSc = $$$OK, parent = "", tBuff = "", prevChar = ""

@@ -33,9 +33,9 @@ ClassMethod OnPage() As %Status
 
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group mr-2" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter('age,name,eyeColor,company');">Simple filter</button>
-                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter('name[first],friends,eyeColor,company');">Nested object</button>
-                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter('name[first],friends[name,address[city]],eyeColor,company');">Multi level</button>
+                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter(JSON.stringify(propertyFilter1));">Simple filter</button>
+                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter(JSON.stringify(propertyFilter2));">Nested object</button>
+                        <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter(JSON.stringify(propertyFilter3));">Multi level</button>
                         <button type="button" class="btn btn-secondary" onclick="updatePropertyFilter('');">Clear Fitler</button>
                     </div>
                     
@@ -52,7 +52,7 @@ ClassMethod OnPage() As %Status
                 <div class="form-group">
                     &nbsp;<br/>
                     <label for="filterString">Filter string #(..EscapeHTML("/csp/irisapprest/demoresponse?flds="))#</label>
-                    <input type="text" class="form-control" id="filterString"  placeholder="put your filter string, example : age,isActive,name[first],friends[name,address[city]],email">
+                    <input type="text" class="form-control" id="filterString"  placeholder="put your filter string, example : #(..EscapeHTML("[""name.first"",""friends"",""eyeColor"",""company""]"))#">
                 </div>
                
                 <div class="form-group">
@@ -89,18 +89,23 @@ ClassMethod writeJS() As %Status
     Set tSc = $$$OK
     Write "<script type=""text/javascript"">"
     &js<
-        /*<*/ var searchCriteria1 = [["age",25,">"]]
-        /*<*/ var searchCriteria2 = [["age",22,">"],["eyeColor","brown","="]]
-              var searchCriteria3 = [["company","TWIGGERY,COASH","IN"]]
+        /*<*/   var searchCriteria1 = [["age",25,">"]]
+        /*<*/   var searchCriteria2 = [["age",22,">"],["eyeColor","brown","="]]
+                var searchCriteria3 = [["company","TWIGGERY,COASH","IN"]]
 
-              var basicDefaultAuth = true;
+                var propertyFilter1 = ["age","name","eyeColor","company"]
+                var propertyFilter2 = ["name.first","friends","eyeColor","company"]
+                var propertyFilter3 = ["name.first","friends.name","address.city","eyeColor","company"]
+                
+                var basicDefaultAuth = true;
+
         function filterJSON() {
             jQuery.ajax({
                 type: "GET",
                 url: "/csp/jsonfilterrest/demoresponse",
                 async: true,
                 dataType: 'json',
-                data: {"flds":jQuery("#filterString").val(),"searchCriteria":jQuery("#searchCriteria").val()},
+                data: {"jsfilter":JSON.stringify({"flds":jQuery("#filterString").val(),"sc":jQuery("#searchCriteria").val()})},
                 success: function (data){
                     var json = JSON.stringify(data,null,2)
                     jQuery("#jsonResponse").val(json);
