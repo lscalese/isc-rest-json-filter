@@ -163,7 +163,17 @@ json is a %DynamicObject or %DynamicArray to filter.
 Set filteredJSON = $$$JSFilter(json)
 ```
 
-The macro $$$JSFilter retrieve all filter data in %request.Data and call the appropriate process.  
+The macro $$$JSFilter retrieve all filters data in %request.Data and call the appropriate process.  
+
+Available macro : 
+
+| Feature | Macro | Classmethod |
+|:--|:--|:--|
+| Property filtering | $$$JSFilterProperty(json,propertyFilter) | ``##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON`` |
+| Searching | $$$JSFilterCriteria(json,searchCriteria) | ``##class(Isc.JSONFiltering.Services.FilteringServices).searchCriteria`` |
+| Sorting | $$$JSFilterSort(json,sort) | ``##class(Isc.JSONFiltering.Services.FilteringServices).sort`` |
+| Limit | $$$JSFilterLimit(json,limit) | ``##class(Isc.JSONFiltering.Services.FilteringServices).limitResult`` |
+| All By %Request | $$$JSFilter(json) | ``##class(Isc.JSONFiltering.Services.FilteringServices).applyAllFilterParameters`` |
 
 ## Prerequisites
 Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
