@@ -11,7 +11,7 @@ Some basic features required in most rest services.
 
 ## Quick start
 
-Include **jsonfilter inc flile** to your REST services class and apply **$$$JSFilter(json)** macro to a %DynamicObject\DynamicArray.  
+Include **jsonfilter inc file** to your REST services class and apply **$$$JSFilter(json)** macro to a %DynamicObject Or %DynamicArray.  
 
 ```
 Include jsonfilter
@@ -119,6 +119,8 @@ Set result = ##class(Isc.JSONFiltering.Services.FilteringServices).sort(json,sor
 
 ## Limit result
 
+Maximum number of records to return.
+
 ```
 Set json = [{"name":"John", "city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"},{"name":"Alain","city":"Bruges"},{"name":"Aurélien","city":"Mons"}]
 
@@ -200,11 +202,25 @@ IRISAPP>Set ^UnitTestRoot = "/opt/irisapp/tests/"
 IRISAPP>Do ##class(%UnitTest.Manager).RunTest(,"/nodelete")
 ```
 
+### Swagger-UI
+
+There is Open API Specification 2.0.  
+Swagger-UI can be use:  
+
+ * Go to this page http://localhost:52773/swagger-ui/index.html
+ * put http://localhost:52773/csp/jsonfilterrest/_spec in search bar
+ * click explorer
+
+ ![swagger-ui](/img/swagger-ui.png)
+
+
 ### Test page
 
 Basic test page : http://localhost:52773/csp/jsonfilter/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
 
 ![test_page_capture](/img/test-page.png)
+
+This page is now useless with [swagger-ui](#Swagger-UI) feature.  
 
 
 ### Postman collection  

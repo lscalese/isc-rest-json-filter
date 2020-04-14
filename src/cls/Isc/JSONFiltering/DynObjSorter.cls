@@ -37,22 +37,22 @@ Method sort() As %DynamicArray
     While iter.%GetNext(.key , .item ) {
         Set value = ##class(Isc.JSONFiltering.Utils).getPropertyValue(item, ..sortBy)
         If $Isvalidnum(value) {
-            Set ^||zTmpSort(value,key)=""
+            Set srt(value,key)=""
         } Else {
-            Set ^||zTmpSort($System.Util.Collation(value,..collation,32768),key) = ""
+            Set srt($System.Util.Collation(value,..collation,32768),key) = ""
         }
     }
     
-    Return:'$Data(^||zTmpSort) result
-
-    Set qrKey = $Query(@"^||zTmpSort",..sortOrder)
-    While (qrKey '= "") {
-        Set id = $Qsubscript(qrKey,2)
-        Do result.%Push(..inputJSON.%Get(id))
-        Set qrKey = $Query(@qrKey,..sortOrder)
+    Set k1 = $Order(srt(""),..sortOrder)
+    While k1'="" {
+        Set k2 = $Order(srt(k1,""))
+        While k2'="" {
+            Do result.%Push(..inputJSON.%Get(k2))
+            Set k2 = $Order(srt(k1,k2))
+        }
+        Set k1 = $Order(srt(k1),..sortOrder)
     }
-
-    Kill ^||zTmpSort
+    Kill srt
     
     Return result
 }
