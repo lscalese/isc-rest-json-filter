@@ -211,14 +211,14 @@ Swagger-UI can be used:
  * put ``http://localhost:52773/csp/jsonfilterrest/_spec`` in search bar
  * click explore
 
- ![swagger-ui](/img/swagger-ui.png)
+ ![swagger-ui](https://github.com/lscalese/isc-rest-json-filter/raw/master/img/swagger-ui.png)
 
 
 ### Test page
 
 Basic test page : http://localhost:52773/csp/jsonfilter/Isc.JSONFiltering.Rest.FilteringCSPDemo.cls  
 
-![test_page_capture](/img/test-page.png)
+![test_page_capture](https://github.com/lscalese/isc-rest-json-filter/raw/master/img/img/test-page.png)
 
 This page is now useless with [swagger-ui](#Swagger-UI) feature.  
 
