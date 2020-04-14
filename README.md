@@ -208,8 +208,8 @@ There is Open API Specification 2.0.
 Swagger-UI can be used:  
 
  * Go to this page http://localhost:52773/swagger-ui/index.html
- * put http://localhost:52773/csp/jsonfilterrest/_spec in search bar
- * click explorer
+ * put ``http://localhost:52773/csp/jsonfilterrest/_spec in search bar``
+ * click explore
 
  ![swagger-ui](/img/swagger-ui.png)
 
