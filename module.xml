@@ -3,35 +3,22 @@
   <Document name="json-filter.ZPM">
     <Module>
         <Name>json-filter</Name>
-        <Version>1.4.0</Version>
+        <Version>1.4.2</Version>
         <Packaging>module</Packaging>
-        <Dependencies>
-          <ModuleReference>
-            <Name>swagger-ui</Name>
-            <Version>*</Version>
-          </ModuleReference>
-        </Dependencies>
         <SourcesRoot>src</SourcesRoot>
         <Resource Name="jsonfilter.INC"/>
         <Resource Name="Isc.JSONFiltering.PKG"/>
         
         <CSPApplication 
+            SourcePath="/web"
+            DeployPath="${cspdir}/jsonfilter"
             Url="/csp/jsonfilterrest" 
             CookiePath="/csp/jsonfilterrest/"
             PasswordAuthEnabled="1"
             AuthenticationMethods="32" 
-            DispatchClass="Isc.JSONFiltering.Rest.FilteringDemo"/>
-        
-        <!--<CSPApplication
-            Path="/src/csp"
-            Url="/csp/jsonfilter"
-            CookiePath="/csp/jsonfilter/"
-            Directory="{$cspdir}/jsonfilter"
-            ServeFiles="1"
-            PasswordAuthEnabled="1"
-            AuthenticationMethods="32" 
+            Recurse="1"
             MatchRoles=":%DB_${Namespace}"
-            Recurse="1"/>-->
+            DispatchClass="Isc.JSONFiltering.Rest.FilteringDemo"/>
         
         <CSPApplication
             Url="/csp/jsonfilter"
