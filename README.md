@@ -175,6 +175,9 @@ Available macro :
 | Limit | $$$JSFilterLimit(json,limit) | ``##class(Isc.JSONFiltering.Services.FilteringServices).limitResult`` |
 | All By %Request | $$$JSFilter(json) | ``##class(Isc.JSONFiltering.Services.FilteringServices).applyAllFilterParameters`` |
 
+Remember to use macros in your app instead of classmethod.  
+
+
 ## Prerequisites
 Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
 
@@ -198,10 +201,21 @@ $ docker-compose build
 $ docker-compose up -d
 ```
 
+## Installation from ZPM client
+
+Open an Iris Terminal
+
+```
+zpm
+install json-filter
+install swagger-ui
+```
 
 ## How to Test it
 
 ### Unit Test
+
+**Not available with zpm install.**  
 
 Open IRIS terminal:
 
