@@ -230,7 +230,7 @@ Basic test page : http://localhost:52773/csp/jsonfilter/Isc.JSONFiltering.Rest.F
 
 ![test_page_capture](https://github.com/lscalese/isc-rest-json-filter/raw/master/img/test-page.png)
 
-This page is now useless with [swagger-ui](#Swagger-UI) feature.  
+This page is now useless with [swagger-ui](#Swagger-UI) module.  
 
 
 ### Postman collection  

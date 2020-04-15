@@ -26,7 +26,7 @@ ClassMethod applyAllFilterParameters(json As %DynamicAbstractObject, filterStrin
 /// ex : "name[first],friends[name,address[city]]"<br/>
 /// <code>
 /// Set json = {"name" : { "first" : "Edith", "last" : "Scott"}, "friends" : [{"name": "Perkins Cruz", "id":"1", "address":[{"city":"London","street":"no value"},{"city":"Roma","street":"no value"}]}]}
-/// Set filter = "name[first],friends[name,address[city]]"
+/// Set filter = ["name.first","friends.name"]
 /// Set filteredJSON = ##class(Isc.JSONFiltering.Services.FilteringServices).filterJSON(json,filter)
 /// Write filteredJSON.%ToJSON()
 /// </code><br/>

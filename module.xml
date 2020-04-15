@@ -43,22 +43,7 @@
             AuthenticationMethods="32" 
             MatchRoles=":%DB_${Namespace}"
             Recurse="1"/>
-        
-
-        <CSPApplication 
-          Url="/crud"
-          Recurse="1"
-          SourcePath="/web"
-          DeployPath="{$cspdir}/crud" 
-          MatchRoles=":{$dbrole}"
-          PasswordAuthEnabled="0"
-          UnauthenticatedEnabled="0"
-          DispatchClass="Sample.PersonREST"
-          ServeFiles="1"
-          CookiePath="/crud"
-          UseCookies="2" />
-
-
+            
         <UnitTest Name="/tests" Package="UnitTest.Isc.JSONFiltering.Services" Phase="test"/>
     </Module>
   </Document>
