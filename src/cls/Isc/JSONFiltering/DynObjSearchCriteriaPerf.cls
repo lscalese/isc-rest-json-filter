@@ -80,7 +80,8 @@ Method find() As %DynamicArray [ Private ]
             Set conditionValue = nestedTab.%Get(1)
             Set operator = $zcvt(nestedTab.%Get(2),"u")
             Set value = $Listget($$$JSFilterIDX(..requestId, id, indexName),2)
-            
+            Set nullvalue = ""
+
             Set collation = $Listget($$$JSFilterIDX(..requestId, id, indexName),1)
             If collation '= "" {
                 If operator = "IN" {
@@ -91,9 +92,10 @@ Method find() As %DynamicArray [ Private ]
                 } Else {
                     Set conditionValue =  $System.Util.Collation(conditionValue,collation,32768)
                 }
+                Set nullvalue = $System.Util.Collation(nullvalue,collation,32768)
             }
             
-            If '..checkCondition(value,conditionValue,operator) {
+            If '..checkCondition(value,conditionValue,operator,nullvalue) {
                 Set add = 0
                 Quit 
             }
@@ -105,7 +107,7 @@ Method find() As %DynamicArray [ Private ]
     Return result
 }
 
-ClassMethod checkCondition(value As %String, conditionValue As %String, operator As %String) As %Boolean
+ClassMethod checkCondition(value As %String, conditionValue As %String, operator As %String, nullvalue As %String = "") As %Boolean
 {
     ;=, !=, <, >, <=, >=, <>, %STARTSWITH, NULL, IN, and NOT NULL
     Set check = 0
@@ -146,9 +148,9 @@ ClassMethod checkCondition(value As %String, conditionValue As %String, operator
             Set check = (conditionValue ']] value)
         }
     } ElseIf operator = "NULL" {
-        Set check = (value = "")
+        Set check = (value = nullvalue)
     } ElseIf operator = "NOT NULL" {
-        Set check = (value '= "")
+        Set check = (value '= nullvalue)
     } ElseIf operator = "IN" {
         Set check = ( $Listfind(conditionValue,value) > 0 )
     } ElseIf operator = "%STARTSWITH" {

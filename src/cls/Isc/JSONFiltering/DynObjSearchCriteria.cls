@@ -34,7 +34,7 @@ Method search() As %DynamicArray
 
         Set iter = result.content.%GetIterator()
         While iter.%GetNext(.key , .item ) {
-            Do resultArray.%Push({}.%FromJSON(item.%Doc))
+            ;Do resultArray.%Push({}.%FromJSON(item.%Doc))
         }
 
         Do ..deleteDocDB()
