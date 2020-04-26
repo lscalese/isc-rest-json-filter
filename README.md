@@ -103,7 +103,7 @@ The used property to sort can be a nested property, but not a list or a property
 Set json = [{"name":"John", "city":"Charleroi"},{"name":"Tony","city":"Charleroi"},{"name":"Lorenzo","city":"Namur"},{"name":"Matteo","city":"Namur"},{"name":"Alessio","city":"Namur"},{"name":"Alain","city":"Bruges"},{"name":"Aurélien","city":"Mons"}]
 
 Set sort = ["city","desc"]
-Set result = $$$JSFilterSort(json,searchCriteria)
+Set result = $$$JSFilterSort(json,sort)
 Write !,result.%ToJSON()
 ```
 
