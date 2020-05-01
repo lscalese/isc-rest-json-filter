@@ -58,7 +58,7 @@ ClassMethod SwaggerSpec() As %Status
   Set swagger.basePath = "/csp/jsonfilterrest"
   Set swagger.info.title = "JSON Filter"
   Set swagger.info.version = "1.4"
-  Set swagger.host = "localhost:52773"
+  Set swagger.host = %request.CgiEnvs("SERVER_NAME") _ ":" _ %request.CgiEnvs("SERVER_PORT") ;"localhost:52773"
   Do swagger.%ToJSON()
   Return $$$OK
 }
