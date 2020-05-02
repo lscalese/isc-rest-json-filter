@@ -42,6 +42,9 @@ XData OpenAPI [ MimeType = application/json ]
         ],
         "summary":"test service",
         "description":"Return a pong with the current date time.\n",
+        "produces":[
+          "application/json"
+        ],
         "operationId":"ping",
         "parameters":[
         ],
@@ -55,6 +58,26 @@ XData OpenAPI [ MimeType = application/json ]
         }
       }
     },
+    "/_spec":{
+      "get":{
+        "tags":[
+          "developers"
+        ],
+        "summary":"OpenAPI spec 2.0",
+        "description":"OpenAPI spec 2.0 .\n",
+        "produces":[
+          "application/json"
+        ],
+        "operationId":"SwaggerSpec",
+        "parameters":[
+        ],
+        "responses":{
+          "200":{
+            "description":"OpenAPI spec 2.0 in json format."
+          }
+        }
+      }
+    },
     "/demoresponse":{
       "get":{
         "tags":[
@@ -62,6 +85,9 @@ XData OpenAPI [ MimeType = application/json ]
         ],
         "summary":"return demo data for testing json filter features",
         "description":"Return a JSON with some properties and nested properties in order to\ntest the different capabilities of json filter features.\n",
+        "produces":[
+          "application/json"
+        ],
         "operationId":"demoresponse",
         "parameters":[
           {
@@ -90,7 +116,7 @@ XData OpenAPI [ MimeType = application/json ]
             "in":"query",
             "description":"Maximum number of records to return.\nApplicable only if the response is an Array.\nIf the response is not an array the limit parameter is ignored.\n",
             "required":false,
-            "type":"integer"
+            "type":"string"
           }
         ],
         "responses":{

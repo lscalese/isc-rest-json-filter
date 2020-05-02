@@ -3,7 +3,7 @@
   <Document name="json-filter.ZPM">
     <Module>
         <Name>json-filter</Name>
-        <Version>1.4.5</Version>
+        <Version>1.4.6</Version>
         <Packaging>module</Packaging>
         <SourcesRoot>src</SourcesRoot>
         <Resource Name="jsonfilter.INC"/>
@@ -18,7 +18,7 @@
             AuthenticationMethods="32" 
             Recurse="1"
             MatchRoles=":%DB_${Namespace}"
-            DispatchClass="Isc.JSONFiltering.Rest.FilteringDemo"/>
+            DispatchClass="Isc.JSONFiltering.Rest.disp"/>
         
         <CSPApplication
             Url="/csp/jsonfilter"

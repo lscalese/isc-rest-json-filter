@@ -18,8 +18,12 @@ XData setup
       <Database Name="${Namespace}" Dir="/opt/${app}/data" Create="yes" Resource="%DB_${Namespace}"/>
     </Configuration>
     <Import File="${SourceDir}" Flags="ck" Recurse="1"/>
-    <CSPApplication Url="${restappurl}" Directory="${cspdir}${cspappname}rest" MatchRoles=":%DB_${Namespace}" AuthenticationMethods="32" DispatchClass="Isc.JSONFiltering.Rest.FilteringDemo"/>
+    <!--<CSPApplication Url="${restappurl}" Directory="${cspdir}${cspappname}rest" MatchRoles=":%DB_${Namespace}" AuthenticationMethods="32" DispatchClass="Isc.JSONFiltering.Rest.FilteringDemo"/>-->
     <CSPApplication Url="${cspappurl}" Directory="${cspdir}${cspappname}"  ServeFiles="1" Recurse="1" MatchRoles=":%DB_${Namespace}" AuthenticationMethods="32"/>
+  </Namespace>
+
+  <Namespace Name="${Namespace}">
+    <CSPApplication Url="${restappurl}" Directory="${cspdir}${cspappname}rest" MatchRoles=":%DB_${Namespace}" AuthenticationMethods="32" DispatchClass="Isc.JSONFiltering.Rest.FilteringDemo"/>
   </Namespace>
 
   <Invoke Class="App.Installer" Method="fixDispatchClass">
@@ -40,7 +44,8 @@ ClassMethod fixDispatchClass(restApp As %String) As %Status
     Set ns = $Namespace
     Zn "%SYS"
     Do ##class(Security.Applications).Get(restApp,.p)
-    Set p("DispatchClass")="Isc.JSONFiltering.Rest.FilteringDemo"
+    ;Set p("DispatchClass")="Isc.JSONFiltering.Rest.FilteringDemo"
+    Set p("DispatchClass")="Isc.JSONFiltering.Rest.disp"
     Do ##class(Security.Applications).Modify(restApp,.p)
     zn ns
     Return $$$OK

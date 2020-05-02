@@ -2,55 +2,49 @@ Include jsonfilter
 
 /// JSON Filter Demo API<br/>
 /// Business logic class defined by OpenAPI in Isc.JSONFiltering.Rest.spec<br/>
-/// Created Apr 14, 2020 12:00:21
-Class Isc.JSONFiltering.Rest.FilteringDemo Extends %CSP.REST
+/// Updated May 2, 2020 12:27:59
+Class Isc.JSONFiltering.Rest.impl Extends %REST.Impl [ ProcedureBlock ]
 {
 
-Parameter CONTENTTYPE = {..#CONTENTTYPEJSON};
-
-Parameter HandleCorsRequest = 1;
-
-XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
-{
-<Routes>
-    <Route Url="/ping" Method="GET" Call="ping"/>
-    <Route Url="/demoresponse" Method="GET" Call="demoJsonResponse"/>
-    <Route Url="/_spec" Method="GET" Call="SwaggerSpec" />
-</Routes>
-}
+/// If ExposeServerExceptions is true, then details of internal errors will be exposed.
+Parameter ExposeServerExceptions = 0;
 
 /// Return a pong with the current date time.
-ClassMethod ping() As %Status
+ClassMethod ping() As %Stream.Object
 {
-    Write { "pong" : ($zdt($h,3,1)) }.%ToJSON()
-    Return $$$OK
+    Do ..%SetStatusCode(200)
+    Return { "pong" : ($zdt($h,3,1)) }
 }
 
 /// Return a JSON with some properties and nested properties in order to
 /// test the different capabilities of json filter features.<br/>
 /// The method arguments hold values for:<br/>
 ///     jsflt, Property filter in order return only a fews json fields.
-/// example name,friends[address[city]]<br/>
-///     jsfltsc, Search Criteria example ["name.first","Edith","="].
+/// example name,age,friends[address[city]]<br/>
+///     jsfltsc, Search Criteria example ["age",25,">"].
 /// Applicable only if the response is an Array.  
 /// If the response is not an array the limit parameter is ignored.<br/>
 ///     jsfltsrt, Sort by example name.first,desc or name.first,asc
 /// If sort order is ommited desc is selected by default.
 /// Applicable only if the response is an Array.
 /// If the response is not an array the limit parameter is ignored.<br/>
-///     jsflmt, Maximum number of records to return.
+///     jsfltlmt, Maximum number of records to return.
 /// Applicable only if the response is an Array.
 /// If the response is not an array the limit parameter is ignored.<br/>
-ClassMethod demoJsonResponse() As %DynamicObject
+ClassMethod demoresponse(jsflt As %String, jsfltsc As %String, jsfltsrt As %String, jsfltlmt As %Integer) As %Stream.Object
 {
+    //(Place business logic here)
+    //Do ..%SetStatusCode(<HTTP_status_code>)
+    //Do ..%SetHeader(<name>,<value>)
+    //Quit (Place response here) ; response may be a string, stream or dynamic object
+    Do ..%SetStatusCode(200)
+    Do ..%SetHeader("Content-Type","application/json")
     Set json = ..getData()
     
-    Write $$$JSFilter(json).%ToJSON()
-
-    Return $$$OK
+    Return $$$JSFilter(json)
 }
 
-ClassMethod SwaggerSpec() As %Status
+ClassMethod SwaggerSpec() As %Stream.Object
 {
   ;Set tSC = ##class(%REST.API).GetWebRESTApplication($NAMESPACE, %request.Application, .swagger)
   Set tSc = ##class(%REST.API).GetApplication("Isc.JSONFiltering.Rest",.swagger)
@@ -60,7 +54,7 @@ ClassMethod SwaggerSpec() As %Status
   Set swagger.info.version = "1.4"
   Set swagger.host = %request.CgiEnvs("SERVER_NAME") _ ":" _ %request.CgiEnvs("SERVER_PORT") ;"localhost:52773"
   Do swagger.%ToJSON()
-  Return $$$OK
+  Return swagger
 }
 
 ClassMethod getData() As %DynamicObject
