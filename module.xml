@@ -3,7 +3,7 @@
   <Document name="json-filter.ZPM">
     <Module>
         <Name>json-filter</Name>
-        <Version>1.4.7</Version>
+        <Version>1.4.8</Version>
         <Description>ObjectScript server side JSON filter</Description>
         <Packaging>module</Packaging>
         <SourcesRoot>src</SourcesRoot>
