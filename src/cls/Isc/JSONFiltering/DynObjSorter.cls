@@ -15,7 +15,7 @@ ClassMethod cmSort(inputJSON As %DynamicArray, sortOptions As %DynamicArray) As 
 {
     Set sortBy = sortOptions.%Get(0)
     Set order = $Zcvt(sortOptions.%Get(1),"l")
-    Set order = $Select(order="" : 1, order="asc" : -1, 1: 1)
+    Set order = $Select(order="" : 1, order="desc" : -1, 1: 1)
     Set sorter = ..%New(inputJSON, sortBy, order)
     Return sorter.sort()
 }
