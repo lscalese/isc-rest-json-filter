@@ -199,7 +199,7 @@ Method buildIndex(index As %String, document As %DynamicObject, id As %Integer) 
     }
     Set $$$JSFilterIDX(..requestId, id, index) = $Listbuild(collation,propertyValue)
     
-    Return
+    Return $$$OK
 }
 
 }
