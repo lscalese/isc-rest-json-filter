@@ -10,7 +10,7 @@
         <Resource Name="jsonfilter.INC"/>
         <Resource Name="Isc.JSONFiltering.PKG"/>
         
-        <CSPApplication 
+        <WebApplication 
             SourcePath="/web"
             DeployPath="${cspdir}/jsonfilter"
             Url="/csp/jsonfilterrest" 
@@ -21,7 +21,7 @@
             MatchRoles=":%DB_${Namespace}"
             DispatchClass="Isc.JSONFiltering.Rest.disp"/>
         
-        <CSPApplication
+        <WebApplication
             Url="/csp/jsonfilter"
             CookiePath="/csp/jsonfilter/"
             SourcePath="/web"
